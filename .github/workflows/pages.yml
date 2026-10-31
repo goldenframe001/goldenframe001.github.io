@@ -39,13 +39,17 @@ jobs:
               name = entry["path"]
               if name.startswith("/") or ".." in pathlib.PurePosixPath(name).parts:
                   raise ValueError("Invalid asset path")
-              data = get(origin + "/" + name)
-              if hashlib.sha256(data).hexdigest() != entry["sha256"]:
-                  raise ValueError("Asset verification failed: " + name)
+              for attempt in range(5):
+                  data = get(origin + "/" + name + "?gf_release=149&attempt=" + str(attempt))
+                  if len(data) == entry["bytes"] and hashlib.sha256(data).hexdigest() == entry["sha256"]:
+                      break
+                  if attempt == 4:
+                      raise ValueError("Asset verification failed: " + name + " bytes=" + str(len(data)))
+                  time.sleep(2 + attempt * 2)
               target = root / name
               target.parent.mkdir(parents=True, exist_ok=True)
               target.write_bytes(data)
-          with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:
+          with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:
               list(pool.map(download, manifest["files"]))
           index = root / "index.html"
           html = index.read_text()
