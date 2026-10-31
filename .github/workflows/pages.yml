@@ -27,7 +27,7 @@ jobs:
               for attempt in range(3):
                   try:
                       request = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-                          with urllib.request.urlopen(request, timeout=90) as response:
+                      with urllib.request.urlopen(request, timeout=90) as response:
                           return response.read()
                   except Exception:
                       if attempt == 2: raise
