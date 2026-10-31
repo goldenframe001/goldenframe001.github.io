@@ -41,9 +41,14 @@ gf130Choose = function(p, voice, rating) {
 
 const gf150MonthBefore = gf08SetMonth;
 gf08SetMonth = function(p, i, m) {
-  // A month is generated once. Subsequent calls restore its exact saved choices.
-  const frozen = p.feedMonths150?.[i];
-  if (frozen) { m.events = frozen.slice(); return; }
+  // Reuse the existing monthly record without serializing a second copy of every feed.
+  if (m.feedVersion150 === 150) return;
+  const frozen = p.months?.[i];
+  if (frozen?.feedVersion150 === 150) {
+    m.events = frozen.events.slice();
+    m.feedVersion150 = 150;
+    return;
+  }
   const hadAudienceCache = Boolean(p.gf64Content?.cache?.[i + '-community']);
   gf150MonthBefore(p, i, m);
   // The video replacement previously consumed the month's sole interview.
@@ -84,6 +89,5 @@ gf08SetMonth = function(p, i, m) {
       } catch { /* An unrecognized historical cache remains untouched. */ }
     }
   }
-  p.feedMonths150 ??= {};
-  p.feedMonths150[i] = m.events.slice();
+  m.feedVersion150 = 150;
 };
