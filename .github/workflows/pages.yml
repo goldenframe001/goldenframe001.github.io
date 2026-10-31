@@ -1,0 +1,59 @@
+name: Publish GOLDEN FRAME
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v6
+      - name: Download and verify the published game
+        shell: python
+        run: |
+          import concurrent.futures, hashlib, json, pathlib, time, urllib.request
+          origin = "https://golden-frame-v18-playtest.ccw4682.chatgpt.site"
+          def get(url):
+              for attempt in range(3):
+                  try:
+                      with urllib.request.urlopen(url, timeout=90) as response:
+                          return response.read()
+                  except Exception:
+                      if attempt == 2: raise
+                      time.sleep(2 + attempt * 2)
+          manifest = json.loads(get(origin + "/github-release149.json"))
+          root = pathlib.Path("_site")
+          root.mkdir(exist_ok=True)
+          def download(entry):
+              name = entry["path"]
+              if name.startswith("/") or ".." in pathlib.PurePosixPath(name).parts:
+                  raise ValueError("Invalid asset path")
+              data = get(origin + "/" + name)
+              if hashlib.sha256(data).hexdigest() != entry["sha256"]:
+                  raise ValueError("Asset verification failed: " + name)
+              target = root / name
+              target.parent.mkdir(parents=True, exist_ok=True)
+              target.write_bytes(data)
+          with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:
+              list(pool.map(download, manifest["files"]))
+          index = root / "index.html"
+          html = index.read_text()
+          html = html.replace("</head>", '<script src="github-api149.js"></script></head>', 1)
+          index.write_text(html)
+          (root / ".nojekyll").write_text("")
+          print("Verified", len(manifest["files"]), "game assets")
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+      - name: Publish game
+        id: deployment
+        uses: actions/deploy-pages@v4
