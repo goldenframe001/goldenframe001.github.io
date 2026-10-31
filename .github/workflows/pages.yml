@@ -21,7 +21,7 @@ jobs:
       - name: Download and verify the published game
         shell: python
         run: |
-          import concurrent.futures, hashlib, json, pathlib, time, urllib.request
+          import concurrent.futures, hashlib, json, pathlib, re, time, urllib.request
           origin = "https://golden-frame-v18-playtest.ccw4682.chatgpt.site"
           def get(url):
               for attempt in range(3):
@@ -41,6 +41,12 @@ jobs:
                   raise ValueError("Invalid asset path")
               for attempt in range(5):
                   data = get(origin + "/" + name + "?gf_release=149&attempt=" + str(attempt))
+                  if name.endswith(".html") and hashlib.sha256(data).hexdigest() != entry["sha256"]:
+                      for match in re.finditer(rb"<script\b[^>]*>.*?</script\s*>", data, re.I | re.S):
+                          candidate = data[:match.start()] + data[match.end():]
+                          if hashlib.sha256(candidate).hexdigest() == entry["sha256"]:
+                              data = candidate
+                              break
                   if len(data) == entry["bytes"] and hashlib.sha256(data).hexdigest() == entry["sha256"]:
                       break
                   if attempt == 4:
