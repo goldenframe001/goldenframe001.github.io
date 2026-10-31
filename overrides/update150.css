@@ -1,0 +1,14 @@
+/* Compact video cards in both the monthly feed and saved Final Cut. */
+.gf142-video{width:100%;max-width:480px;margin-inline:auto;box-sizing:border-box;border-radius:10px}
+.gf142-video>header{padding:8px 11px;gap:6px;font-size:10px}
+.gf142-video-logo{padding:1px 6px}
+.gf142-video-thumb{aspect-ratio:auto;height:88px;padding:12px 15px}
+.gf142-video-thumb>span{font-size:10px}
+.gf142-video-thumb>strong{font-size:20px;line-height:1.3}
+.gf142-video-thumb>i{font-size:29px;right:11%}
+.gf142-video-thumb>small{font-size:10px;bottom:6px;right:8px}
+.gf142-video-copy{gap:8px;padding:10px 11px}
+.gf142-avatar{flex-basis:26px;height:26px;font-size:12px}
+.gf142-video-copy h4{font-size:13px!important;line-height:1.45!important;margin-bottom:4px!important;overflow-wrap:anywhere}
+.gf142-video-copy p{font-size:10px;line-height:1.45}
+@media(max-width:480px){.gf142-video-thumb{height:72px}.gf142-video-thumb>strong{font-size:18px}.gf142-video>header small{font-size:9px}}
