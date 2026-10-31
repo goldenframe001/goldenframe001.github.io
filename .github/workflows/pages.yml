@@ -1,5 +1,7 @@
 name: Publish GOLDEN FRAME
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 permissions:
   contents: read
@@ -24,7 +26,8 @@ jobs:
           def get(url):
               for attempt in range(3):
                   try:
-                      with urllib.request.urlopen(url, timeout=90) as response:
+                      request = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+                          with urllib.request.urlopen(request, timeout=90) as response:
                           return response.read()
                   except Exception:
                       if attempt == 2: raise
