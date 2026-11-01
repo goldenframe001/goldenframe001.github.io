@@ -63,7 +63,8 @@ jobs:
           index = root / "index.html"
           html = index.read_text()
           html = html.replace("</head>", '<script src="github-api149.js"></script></head>', 1)
-          html += '\n<link rel="stylesheet" href="update150.css?v=150"><script src="feed-content150.js?v=150"></script><script src="update150.js?v=150"></script>\n'
+          if 'src="feed-content150.js' not in html:
+              html += '\n<link rel="stylesheet" href="update150.css?v=150"><script src="feed-content150.js?v=150"></script><script src="update150.js?v=150"></script>\n'
           index.write_text(html)
           (root / ".nojekyll").write_text("")
           print("Verified", len(manifest["files"]), "game assets")

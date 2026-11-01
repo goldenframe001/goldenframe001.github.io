@@ -4,7 +4,7 @@ const source = path.resolve(process.argv[2] || '.');
 process.chdir(source);
 const setup = fs.readFileSync('scripts/test-update137.cjs', 'utf8').split('\nfunction drainOne')[0];
 const {run} = new Function('require', setup + '\nreturn {run};')(require);
-for (const file of ['feed-content150.js', 'update150.js']) run(fs.readFileSync(path.join(repo, 'overrides', file), 'utf8'));
+if (run('typeof GF150_AUDIENCE') === 'undefined') for (const file of ['feed-content150.js', 'update150.js']) run(fs.readFileSync(path.join(repo, 'overrides', file), 'utf8'));
 const read = expression => JSON.parse(run('JSON.stringify(' + expression + ')'));
 assert.equal(run('Object.values(GF150_AUDIENCE).flatMap(g => Object.values(g).flat()).length'), 600);
 assert.equal(run('new Set(Object.values(GF150_AUDIENCE).flatMap(g => Object.values(g).flat())).size'), 600);
