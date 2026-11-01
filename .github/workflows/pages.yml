@@ -65,9 +65,13 @@ jobs:
           html = html.replace("</head>", '<script src="github-api149.js"></script></head>', 1)
           if 'src="feed-content150.js' not in html:
               html += '\n<link rel="stylesheet" href="update150.css?v=150"><script src="feed-content150.js?v=150"></script><script src="update150.js?v=150"></script>\n'
+          if 'src="update152.js' not in html:
+              html += '\n<link rel="stylesheet" href="update152.css?v=152"><script src="update152.js?v=152"></script>\n'
           index.write_text(html)
           (root / ".nojekyll").write_text("")
           print("Verified", len(manifest["files"]), "game assets")
+      - name: Verify actor roulette deadline and budget display
+        run: node scripts/test-update152.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:

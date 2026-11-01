@@ -1,0 +1,19 @@
+.gf152-budget{position:sticky;top:8px;z-index:12;box-sizing:border-box;margin:16px 0;padding:15px 18px;border:1px solid #b8944f;border-radius:12px;background:linear-gradient(120deg,#172332 0%,#101923 100%);box-shadow:0 7px 22px #0004;text-align:left;color:#edf2f7}
+.gf152-budget-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.gf152-budget-top>div{min-width:0}
+.gf152-budget-top small{display:block;color:#b9c5d3;font-size:12px;line-height:1.5}
+.gf152-budget-top strong{display:block;font-size:30px;line-height:1.3;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.6px;color:#f0cf86}
+.gf152-budget-left{text-align:right}
+.gf152-budget-left strong{color:#96ddbd}
+.gf152-budget.is-low .gf152-budget-left strong{color:#ffcd83}
+.gf152-budget-track{height:6px;margin:12px 0 8px;overflow:hidden;background:#354252;border-radius:8px}
+.gf152-budget-track>span{display:block;height:100%;background:linear-gradient(90deg,#d6b263,#f3d897);border-radius:8px}
+.gf152-budget-foot{display:flex;justify-content:space-between;gap:12px;font-size:11px;line-height:1.5;color:#b9c5d3}
+.gf152-budget-foot b{color:#edf2f7;font-weight:650}
+.gf152-budget-preview{display:flex;flex-wrap:wrap;justify-content:space-between;gap:3px 14px;margin:10px 0 0!important;padding-top:9px;border-top:1px solid #ffffff21;color:#cdd7e1;font-size:12px;line-height:1.6}
+.gf152-budget-preview b{color:#f0cf86;font-variant-numeric:tabular-nums}
+.gf152-allocation{display:flex;flex-direction:column;align-items:center;gap:5px;box-sizing:border-box;max-width:500px;margin:20px auto;padding:20px 16px;border:1px solid #b8944f;border-radius:13px;background:linear-gradient(120deg,#172332,#101923);color:#cdd7e1}
+.gf152-allocation small{font-size:13px;color:#d9c99f}
+.gf152-allocation strong{font-size:42px;line-height:1.3;font-weight:800;letter-spacing:-1px;font-variant-numeric:tabular-nums;color:#f0cf86}
+.gf152-allocation>span{font-size:11px;color:#b9c5d3}
+@media(max-width:480px){.gf152-budget{top:4px;margin:12px 0;padding:12px;border-radius:10px}.gf152-budget-top{gap:8px}.gf152-budget-top strong{font-size:25px}.gf152-budget-top small{font-size:11px}.gf152-budget-foot{font-size:10px;gap:7px}.gf152-budget-preview{font-size:11px}.gf152-allocation strong{font-size:36px}}
